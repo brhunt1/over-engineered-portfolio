@@ -1,0 +1,1 @@
+# S3 and DynamoDB remote state configuration for Terraform

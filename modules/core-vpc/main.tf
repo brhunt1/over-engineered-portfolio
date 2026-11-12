@@ -1,0 +1,1 @@
+# VPC, subnets, IGW, NAT gtwys, Route tables, and security groups

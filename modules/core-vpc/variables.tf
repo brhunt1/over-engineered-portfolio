@@ -1,0 +1,1 @@
+# Input vars for the network module
