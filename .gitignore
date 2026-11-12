@@ -1,0 +1,26 @@
+# --- Local Terraform Directories ---
+.terraform/
+
+# --- State Files (CRITICAL: Never commit these) ---
+*.tfstate
+*.tfstate.*
+
+# --- Execution Plans ---
+*.tfplan
+*.tfplan.binary
+
+# --- Sensitive Variable Files ---
+terraform.tfvars
+terraform.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+
+# --- Crash Logs ---
+crash.log
+crash[0-9]*.log
+
+# --- Local Testing & IDEs ---
+.vscode/
+.idea/
+.DS_Store
+environments/prod/tfplan
