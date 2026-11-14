@@ -1,1 +1,52 @@
 # Infrastructure Workflow, Plan, Checkov scan, Apply
+
+name: "Infrastructure Workflow & Security Scan"
+
+on:
+    pull_request:
+        branches:
+            - main
+        paths:
+            - 'environments/prod/**'
+            - 'modules/**'
+    
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    terraform-validate-and-scan:
+        name: "Validate, Plan, and Scan"
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./environments/prod
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v2
+              with:
+                terraform_version: 1.7.6
+
+            - name: Terraform Init
+              run: terraform init
+
+            - name: Terraform Validate
+              run: terraform validate
+            
+            - name: Run Checkov Scan on Terraform Files
+              uses: bridgecrewio/checkov-action@master
+              with:
+                framework: terraform
+                output_format: cli
+                soft_fail: false
+
+            - name: Terraform Plan
+              run: terraform plan -out=tfplan.binary
+              env:
+                TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                TF_VAR_aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_DEFAULT_REGION: "us-west-2"
+
